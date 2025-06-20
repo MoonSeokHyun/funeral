@@ -115,7 +115,7 @@
 
 <div class="card-container">
     <?php foreach ($facilities as $f): ?>
-        <div class="card" onclick="window.location.href='<?= site_url('funeral/' . esc($f['id'])) ?>'">
+        <div class="card" onclick="window.location.href='<?= site_url('funerals/' . esc($f['id'])) ?>'">
             <h3><?= esc($f['facility_name']) ?> ⚰️</h3>
             <p>지역: <?= esc($f['city']) ?> <?= esc($f['county']) ?> 📍</p>
         </div>

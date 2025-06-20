@@ -1,15 +1,16 @@
 <?php
 // PHP: SEO 변수 및 JSON-LD 세팅 (장례시설용, 가격 포함)
-if (!empty($funeral)) {
-    $facilityName = esc($funeral['facility_name'] ?? '장례시설명');
-    $city = esc($funeral['city'] ?? '도시');
-    $county = esc($funeral['county'] ?? '구/군');
-    $address = esc($funeral['address'] ?? '');
-    $phone = esc($funeral['phone'] ?? '전화번호');
-    $operationStatus = esc($funeral['operation_status'] ?? '운영 상태');
-    $postalCode = esc($funeral['postal_code'] ?? '');
-    $latitude = esc($funeral['latitude'] ?? '');
-    $longitude = esc($funeral['longitude'] ?? '');
+if (!empty($facility)) {
+    $facilityName = esc($facility['facility_name'] ?? '장례시설명');
+    $city = esc($facility['city'] ?? '도시');
+    $county = esc($facility['county'] ?? '구/군');
+    $address = esc($facility['address'] ?? '');
+    $phone = esc($facility['phone'] ?? '전화번호');
+    $operationStatus = esc($facility['operation_status'] ?? '운영 상태');
+    $postalCode = esc($facility['postal_code'] ?? '');
+    $latitude = esc($facility['latitude'] ?? '');
+    $longitude = esc($facility['longitude'] ?? '');
+    $priceInfo = esc($facility['price_info'] ?? '가격 정보 없음');
 
     $seoTitle = "{$facilityName} 위치 최신 가격 정보 | 에듀허브 장례시설 정보";
     $seoDescription = "{$facilityName} 장례식장의 위치, 연락처, 운영 상태, 주소 및 합리적인 가격({$priceInfo}) 정보를 제공합니다.";
@@ -50,6 +51,7 @@ if (!empty($funeral)) {
     ];
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -196,7 +198,7 @@ if (!empty($funeral)) {
       <li class="menu-group">
         <a href="#" class="dropdown-toggle">장례식장 ▾</a>
         <ul class="sub-menu">
-          <li><a href="/funeral">💇 장례식장 정보</a></li>
+          <li><a href="/funerals">💇 장례식장 정보</a></li>
         </ul>
       </li>
     </ul>
@@ -204,7 +206,7 @@ if (!empty($funeral)) {
 
   <!-- 검색창 -->
   <div class="search-bar">
-    <form action="/funeral" method="get" style="width: 100%;">
+    <form action="/funerals" method="get" style="width: 100%;">
       <div class="search-box">
         <span class="icon">🔍</span>
         <input

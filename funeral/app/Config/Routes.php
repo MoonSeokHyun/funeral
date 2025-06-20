@@ -7,5 +7,9 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 
-$routes->get('funeral', 'FuneralFacility::index');
-$routes->get('funeral/(:num)', 'FuneralFacility::detail/$1');
+$routes->get('funerals', 'FuneralFacility::index');
+$routes->get('funerals/(:num)', 'FuneralFacility::detail/$1');
+
+
+$routes->get('sitemap.xml', 'SitemapController::index');
+$routes->get('sitemap/generate/(:segment)/(:num)', 'SitemapController::generate/$1/$2');

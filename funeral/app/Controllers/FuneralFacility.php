@@ -33,7 +33,7 @@ class FuneralFacility extends BaseController
         $data['pager'] = $facilityModel->pager;
         $data['search'] = $search;
 
-        return view('funeral/index', $data);
+        return view('funerals/index', $data);
     }
     public function detail($id)
     {
@@ -62,7 +62,7 @@ class FuneralFacility extends BaseController
             ->where('funeral_home_name', $facility['facility_name'])
             ->findAll();
     
-        return view('funeral/detail', [
+        return view('funerals/detail', [
             'facility' => $facility,
             'items' => $items,
             'blog' => $blog,
