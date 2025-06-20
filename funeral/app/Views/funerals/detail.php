@@ -92,7 +92,15 @@
 
 <div class="container">
   <h1 class="content-title"><?= esc($facility['facility_name']) ?> 상세정보</h1>
-
+  <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6686738239613464"
+     data-ad-slot="1204098626"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
   <!-- 기본정보 섹션 -->
   <div class="section">
     <h2>기본정보</h2>
@@ -112,7 +120,15 @@
       <li><strong>시설 종류:</strong> <div class="value"><?= esc($facility['facility_type']) ?></div></li>
     </ul>
   </div>
-
+  <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6686738239613464"
+     data-ad-slot="1204098626"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
   <!-- 관련 비용 섹션 -->
   <div class="section">
     <h2>관련 비용</h2>
@@ -131,7 +147,15 @@
       </ul>
     <?php endif; ?>
   </div>
-
+  <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6686738239613464"
+     data-ad-slot="1204098626"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
   <!-- 블로그 검색 -->
   <?php if (!empty($blog['items'])): ?>
     <div class="section">
@@ -147,7 +171,15 @@
       </div>
     </div>
   <?php endif; ?>
-
+  <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6686738239613464"
+     data-ad-slot="1204098626"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
   <!-- 이미지 검색 -->
   <?php if (!empty($images['items'])): ?>
     <div class="section">
@@ -162,7 +194,15 @@
       </div>
     </div>
   <?php endif; ?>
-
+  <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6686738239613464"
+     data-ad-slot="1204098626"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
   <p class="back-link"><a href="<?= site_url('funeral') ?>">← 목록으로</a></p>
 </div>
 

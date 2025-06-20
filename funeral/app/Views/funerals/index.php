@@ -112,7 +112,15 @@
 <?php include APPPATH . 'Views/includes/header.php'; ?>
 
 <h1 class="page-title">장례시설 목록</h1>
-
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6686738239613464"
+     data-ad-slot="1204098626"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 <div class="card-container">
     <?php foreach ($facilities as $f): ?>
         <div class="card" onclick="window.location.href='<?= site_url('funerals/' . esc($f['id'])) ?>'">
