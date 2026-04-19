@@ -12,4 +12,5 @@ $routes->get('funerals/(:num)', 'FuneralFacility::detail/$1');
 
 
 $routes->get('sitemap.xml', 'SitemapController::index');
+$routes->get('sitemap/generate/(:segment)', 'SitemapController::generate/$1');
 $routes->get('sitemap/generate/(:segment)/(:num)', 'SitemapController::generate/$1/$2');

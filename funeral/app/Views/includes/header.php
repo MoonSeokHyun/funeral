@@ -1,227 +1,248 @@
 <?php
-// PHP: SEO 변수 및 JSON-LD 세팅 (장례시설용, 가격 포함)
-if (!empty($facility)) {
-    $facilityName = esc($facility['facility_name'] ?? '장례시설명');
-    $city = esc($facility['city'] ?? '도시');
-    $county = esc($facility['county'] ?? '구/군');
-    $address = esc($facility['address'] ?? '');
-    $phone = esc($facility['phone'] ?? '전화번호');
-    $operationStatus = esc($facility['operation_status'] ?? '운영 상태');
-    $postalCode = esc($facility['postal_code'] ?? '');
-    $latitude = esc($facility['latitude'] ?? '');
-    $longitude = esc($facility['longitude'] ?? '');
-    $priceInfo = esc($facility['price_info'] ?? '가격 정보 없음');
+helper('url');
 
-    $seoTitle = "{$facilityName} 위치 최신 가격 정보 | 에듀허브 장례시설 정보";
-    $seoDescription = "{$facilityName} 장례식장의 위치, 연락처, 운영 상태, 주소 및 합리적인 가격({$priceInfo}) 정보를 제공합니다.";
-    $seoKeywords = "{$facilityName}, 장례식장, {$city}, {$county}, 가격, 연락처, 운영 상태, 에듀허브";
+$siteName = 'F.easehub';
+$defaultTitle = '전국 장례식장 정보, 위치, 비용 비교 | F.easehub';
+$defaultDescription = '전국 장례식장 위치, 연락처, 시설, 장례비용 정보를 한 곳에서 검색하고 비교해보세요.';
+$defaultKeywords = '장례식장, 장례식장 정보, 장례식장 비용, 장례시설, 장례비용 비교';
+$defaultImage = base_url('favicon.ico');
 
-    // JSON-LD schema for FuneralHome
-    $jsonLd = [
-        "@context" => "https://schema.org",
-        "@type" => "FuneralHome",
-        "name" => $facilityName,
-        "address" => [
-            "@type" => "PostalAddress",
-            "streetAddress" => $address,
-            "addressLocality" => "{$city} {$county}",
-            "postalCode" => $postalCode,
-            "addressCountry" => "KR"
-        ],
-        "telephone" => $phone,
-        "geo" => [
-            "@type" => "GeoCoordinates",
-            "latitude" => $latitude,
-            "longitude" => $longitude
-        ],
-        "openingHours" => $operationStatus === '운영' ? "Mo-Su 00:00-24:00" : "휴무",
-        "url" => current_url(),
-        "priceRange" => $priceInfo
-    ];
-} else {
-    $seoTitle = '장례시설 정보 및 위치, 연락처는 에듀허브에서!';
-    $seoDescription = '장례시설 정보 및 위치, 연락처, 운영 상태는 에듀허브에서!';
-    $seoKeywords = '장례시설, 위치, 연락처, 운영 상태, 에듀허브';
+$seoTitle = $seoTitle ?? $defaultTitle;
+$seoDescription = $seoDescription ?? $defaultDescription;
+$seoKeywords = $seoKeywords ?? $defaultKeywords;
+$canonicalUrl = $canonicalUrl ?? current_url();
+$seoImage = $seoImage ?? $defaultImage;
 
+if (!isset($jsonLd)) {
     $jsonLd = [
         "@context" => "https://schema.org",
         "@type" => "WebSite",
-        "name" => "에듀허브",
-        "url" => base_url()
+        "name" => $siteName,
+        "url" => base_url(),
+        "potentialAction" => [
+            "@type" => "SearchAction",
+            "target" => base_url('funerals?search={search_term_string}'),
+            "query-input" => "required name=search_term_string"
+        ]
     ];
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title><?= $seoTitle ?></title>
-  <meta name="description" content="<?= $seoDescription ?>" />
-  <meta name="keywords" content="<?= $seoKeywords ?>" />
+  <title><?= esc($seoTitle) ?></title>
+  <meta name="description" content="<?= esc($seoDescription) ?>" />
+  <meta name="keywords" content="<?= esc($seoKeywords) ?>" />
+  <link rel="canonical" href="<?= esc($canonicalUrl) ?>" />
 
-  <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="<?= $seoTitle ?>" />
-  <meta property="og:description" content="<?= $seoDescription ?>" />
-  <meta property="og:url" content="<?= current_url() ?>" />
-  <meta property="og:site_name" content="에듀허브" />
+  <meta property="og:title" content="<?= esc($seoTitle) ?>" />
+  <meta property="og:description" content="<?= esc($seoDescription) ?>" />
+  <meta property="og:url" content="<?= esc($canonicalUrl) ?>" />
+  <meta property="og:site_name" content="<?= esc($siteName) ?>" />
+  <meta property="og:image" content="<?= esc($seoImage) ?>" />
 
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="<?= $seoTitle ?>" />
-  <meta name="twitter:description" content="<?= $seoDescription ?>" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="<?= esc($seoTitle) ?>" />
+  <meta name="twitter:description" content="<?= esc($seoDescription) ?>" />
+  <meta name="twitter:image" content="<?= esc($seoImage) ?>" />
 
-  <!-- JSON-LD for SEO -->
   <script type="application/ld+json">
   <?= json_encode($jsonLd, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) ?>
   </script>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6686738239613464" crossorigin="anonymous"></script>
 
   <style>
-    * {
-      margin: 0; padding: 0; box-sizing: border-box;
-    }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: white !important;
-      color: #333;
-    }
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-    ul {
-      list-style: none;
+    :root {
+      --bg: #f4f7f7;
+      --surface: #ffffff;
+      --text: #1e2428;
+      --muted: #5d6670;
+      --line: #e2e8eb;
+      --primary: #0e7f63;
+      --primary-dark: #09624d;
+      --shadow: 0 8px 22px rgba(9, 34, 36, 0.08);
+      --radius: 14px;
+      --max: 1140px;
     }
 
-    /* 상단 내비게이션 */
-    .top-nav {
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", "Apple SD Gothic Neo", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .site-wrap {
+      min-height: 100vh;
       display: flex;
+      flex-direction: column;
+    }
+
+    .site-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #ddd;
-      padding: 12px 24px;
-      background: #fff;
+      gap: 16px;
     }
-    .logo {
+
+    .logo-link {
       font-size: 20px;
-      font-weight: bold;
-      color: #00b15d;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: -0.2px;
     }
-    .center-nav {
+
+    .header-nav {
       display: flex;
       align-items: center;
-      gap: 24px;
-      position: relative;
-    }
-    .menu-group {
-      position: relative;
-    }
-    .menu-group > a {
+      gap: 14px;
+      flex-wrap: wrap;
       font-size: 14px;
-      font-weight: 500;
-      color: #333;
-      padding: 6px;
+      color: var(--muted);
+    }
+
+    .header-nav a:hover {
+      color: var(--primary);
+    }
+
+    .search-wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 12px 18px 16px;
+    }
+
+    .search-form {
+      display: flex;
+      gap: 10px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 8px 8px 14px;
+      box-shadow: 0 2px 8px rgba(9, 34, 36, 0.04);
+    }
+
+    .search-form input {
+      flex: 1;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text);
+      font-size: 15px;
+      min-width: 0;
+    }
+
+    .search-form button {
+      border: 0;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 10px 16px;
       cursor: pointer;
     }
-    .menu-group:hover .sub-menu {
-      display: block;
-    }
-    .sub-menu {
-      display: none;
-      position: absolute;
-      top: 30px;
-      left: 0;
-      background: white;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      min-width: 160px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-      z-index: 999;
-    }
-    .sub-menu li a {
-      display: block;
-      padding: 10px 14px;
-      font-size: 13px;
-      color: #2f7f5f;
-      white-space: nowrap;
-    }
-    .sub-menu li a:hover {
-      background-color: #f2fcf6;
+
+    .search-form button:hover {
+      background: var(--primary-dark);
     }
 
-    /* 검색창 */
-    .search-bar {
-      display: flex;
-      justify-content: center;
-      margin: 20px auto;
-      max-width: 720px;
-      padding: 0 16px;
-    }
-    .search-box {
-      display: flex;
-      align-items: center;
-      border: 2px solid #00b15d;
-      border-radius: 8px;
-      padding: 8px 12px;
+    .container {
       width: 100%;
-      background: #fff;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 18px;
     }
-    .search-box input {
-      border: none;
+
+    main {
       flex: 1;
-      padding: 6px 8px;
-      font-size: 14px;
-      color: #333;
-      background: transparent;
+      padding-bottom: 48px;
     }
-    .search-box input::placeholder {
-      color: #aaa;
+
+    .section-block {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-top: 20px;
     }
-    .search-box .icon {
-      margin-right: 8px;
-      font-size: 16px;
-      color: #00b15d;
+
+    .adsbygoogle {
+      display: block;
+      margin: 18px auto;
+      min-height: 100px;
+    }
+
+    @media (max-width: 780px) {
+      .header-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .logo-link {
+        font-size: 18px;
+      }
+
+      .header-nav {
+        font-size: 13px;
+      }
+
+      .search-form button {
+        padding: 10px 12px;
+        font-size: 13px;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- 상단 내비게이션 -->
-  <div class="top-nav">
-    <div class="logo"><a href="/">F.easehub</a></div>
-    <ul class="center-nav">
-      <li class="menu-group">
-        <a href="#" class="dropdown-toggle">장례식장 ▾</a>
-        <ul class="sub-menu">
-          <li><a href="/funerals">💇 장례식장 정보</a></li>
-        </ul>
-      </li>
-    </ul>
-  </div>
-
-  <!-- 검색창 -->
-  <div class="search-bar">
-    <form action="/funerals" method="get" style="width: 100%;">
-      <div class="search-box">
-        <span class="icon">🔍</span>
+<div class="site-wrap">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="logo-link" href="<?= site_url('/') ?>">F.easehub</a>
+      <nav class="header-nav" aria-label="상단 메뉴">
+        <a href="<?= site_url('/') ?>">홈</a>
+        <a href="<?= site_url('funerals') ?>">장례식장 목록</a>
+        <a href="<?= site_url('sitemap.xml') ?>">사이트맵</a>
+      </nav>
+    </div>
+    <div class="search-wrap">
+      <form class="search-form" action="<?= site_url('funerals') ?>" method="get" role="search">
+        <label for="searchInput" class="sr-only" style="position:absolute;left:-9999px;">장례식장 검색</label>
         <input
-          type="text"
+          type="search"
           name="search"
           id="searchInput"
-          placeholder="장례식장명, 주소, 전화번호 등 검색"
+          placeholder="장례식장명, 주소, 지역, 전화번호 검색"
           value="<?= esc($search ?? '') ?>"
         />
-      </div>
-      <button type="submit" style="display: none;">Search</button>
-    </form>
-  </div>
-
-  <!-- 여기에 컨텐츠 영역 추가 -->
-
-</body>
-</html>
+        <button type="submit">검색</button>
+      </form>
+    </div>
+  </header>

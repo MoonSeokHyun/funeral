@@ -7,15 +7,18 @@ use CodeIgniter\Controller;
 
 class SitemapController extends Controller
 {
-    protected $perPage = 10000;
+    protected $perPage = 5000;
 
-    // sitemap index 생성
     public function index()
     {
         helper('url');
 
         $xml  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
         $xml .= "<sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
+        $xml .= "  <sitemap>\n";
+        $xml .= "    <loc>" . base_url("sitemap/generate/static") . "</loc>\n";
+        $xml .= "    <lastmod>" . date('Y-m-d') . "</lastmod>\n";
+        $xml .= "  </sitemap>\n";
 
         $facilityModel = new FuneralFacilityModel();
         $total = $facilityModel->countAll();
@@ -36,10 +39,13 @@ class SitemapController extends Controller
                     ->setBody($xml);
     }
 
-    // 장례시설 sitemap 분할 페이지
-    public function generate($type = 'funeral', $pageNumber = 1)
+    public function generate($type = 'funeral', $pageNumber = null)
     {
-        if ($type !== 'funeral') {
+        if ($type === 'static') {
+            return $this->generateStaticUrls();
+        }
+
+        if ($type !== 'funeral' || empty($pageNumber)) {
             return $this->response
                         ->setStatusCode(404)
                         ->setBody('Invalid sitemap type.');
@@ -78,5 +84,34 @@ class SitemapController extends Controller
         return $this->response
                     ->setHeader('Content-Type', 'application/xml; charset=utf-8')
                     ->setBody($xml);
+    }
+
+    protected function generateStaticUrls()
+    {
+        helper('url');
+        $today = date('Y-m-d');
+
+        $staticUrls = [
+            ['loc' => base_url('/'), 'changefreq' => 'daily', 'priority' => '1.0'],
+            ['loc' => base_url('funerals'), 'changefreq' => 'daily', 'priority' => '0.9'],
+        ];
+
+        $xml  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+        $xml .= "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
+
+        foreach ($staticUrls as $entry) {
+            $xml .= "  <url>\n";
+            $xml .= "    <loc>{$entry['loc']}</loc>\n";
+            $xml .= "    <lastmod>{$today}</lastmod>\n";
+            $xml .= "    <changefreq>{$entry['changefreq']}</changefreq>\n";
+            $xml .= "    <priority>{$entry['priority']}</priority>\n";
+            $xml .= "  </url>\n";
+        }
+
+        $xml .= "</urlset>";
+
+        return $this->response
+            ->setHeader('Content-Type', 'application/xml; charset=utf-8')
+            ->setBody($xml);
     }
 }
